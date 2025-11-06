@@ -1,6 +1,7 @@
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import React, { useState } from 'react';
-import {StatusBar} from "expo-status-bar";
+import { StatusBar } from 'expo-status-bar';
+import CalcButton from '../components/CalcButton';
 
 const buttons = [
     ['7', '8', '9', '/'],
@@ -13,8 +14,8 @@ const CalculatorPortrait = () => {
     const [result, setResult] = useState('0');
     const [expression, setExpression] = useState('');
 
-    const handlePress = (btn:string) => {
-        if(btn == '='){
+    const handlePress = (btn: string) => {
+        if (btn === '=') {
             calculate();
             return;
         }
@@ -23,9 +24,9 @@ const CalculatorPortrait = () => {
             setExpression(expression.slice(0, -1) + btn);
             return;
         }
-
         setExpression(expression + btn);
-    }
+    };
+
     const calculate = () => {
         if (!expression) return;
         try {
@@ -56,9 +57,7 @@ const CalculatorPortrait = () => {
                 {buttons.map((row, rowIndex) => (
                     <View key={rowIndex} style={styles.row}>
                         {row.map((btn) => (
-                            <TouchableOpacity key={btn} style={styles.button} onPress={()=>handlePress(btn)}>
-                                <Text style={styles.buttonText}>{btn}</Text>
-                            </TouchableOpacity>
+                            <CalcButton key={btn} label={btn} onPress={handlePress} />
                         ))}
                     </View>
                 ))}
@@ -93,7 +92,7 @@ const styles = StyleSheet.create({
         fontSize: 24,
         fontWeight: 'bold',
         color: '#f4a107',
-        backgroundColor:'#000',
+        backgroundColor: '#000',
         paddingHorizontal: 16,
         paddingVertical: 8,
         borderRadius: 15,
@@ -106,14 +105,6 @@ const styles = StyleSheet.create({
     divider: {
         width: '90%',
         height: 2,
-        shadowColor: '#000',
-        shadowOffset: {
-            width: 0,
-            height: 2,
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 3.84,
-        elevation: 5,
         backgroundColor: '#000',
         marginVertical: 20,
         borderRadius: 1,
@@ -126,28 +117,6 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         marginBottom: 15,
     },
-    button: {
-        backgroundColor: '#000',
-        width: 70,
-        height: 70,
-        shadowColor: '#000',
-        shadowOffset: {
-            width: 0,
-            height: 2,
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 3.84,
-        elevation: 5,
-        borderRadius: 35,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    buttonText: {
-        color: '#fff',
-        fontSize: 28,
-        fontWeight: 'bold',
-    },
 });
-
 
 export default CalculatorPortrait;

@@ -1,5 +1,7 @@
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import React, { useState } from 'react';
+import CalcButton from '../components/CalcButton';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
 
 const buttons = [
@@ -32,7 +34,6 @@ const CalculatorLandscape = () => {
             return;
         }
 
-
         const mapping: Record<string, string> = {
             'π': 'Math.PI',
             'e': 'Math.E',
@@ -48,8 +49,8 @@ const CalculatorLandscape = () => {
         };
 
         const mapped = mapping[btn] ?? btn;
-
         const lastChar = expression.slice(-1);
+
         if ('+-*/.'.includes(btn) && '+-*/.'.includes(lastChar)) {
             setExpression(expression.slice(0, -1) + mapped);
             return;
@@ -87,20 +88,13 @@ const CalculatorLandscape = () => {
                 .replace(/%/g, '/100')
                 .replace(/([0-9eE.+\-*/()]+)!/g, (_, n) => `factorial(${n})`);
 
-
             const openCount = (sanitized.match(/\(/g) || []).length;
             const closeCount = (sanitized.match(/\)/g) || []).length;
             if (openCount > closeCount) {
                 sanitized += ')'.repeat(openCount - closeCount);
             }
 
-
-            const context = {
-                Math,
-                factorial,
-            };
-
-
+            const context = { Math, factorial };
             const value = Function(...Object.keys(context), `return ${sanitized}`)(
                 ...Object.values(context)
             );
@@ -113,34 +107,33 @@ const CalculatorLandscape = () => {
         }
     };
 
-
     return (
-        <View style={styles.container}>
-            <View style={styles.topBar}>
-                <TouchableOpacity onPress={() => { setExpression(''); setResult('0'); }}>
-                    <Text style={styles.restart}>C</Text>
-                </TouchableOpacity>
-                <View style={styles.resultContainer}>
-                    <Text style={styles.resultText}>{expression || result}</Text>
+        <SafeAreaView style={styles.container}>
+            <View>
+                <View style={styles.topBar}>
+                    <TouchableOpacity onPress={() => { setExpression(''); setResult('0'); }}>
+                        <Text style={styles.restart}>C</Text>
+                    </TouchableOpacity>
+                    <View style={styles.resultContainer}>
+                        <Text style={styles.resultText}>{expression || result}</Text>
+                    </View>
                 </View>
-            </View>
 
-            <View style={styles.divider} />
+                <View style={styles.divider} />
+            </View>
 
             <View style={styles.buttonsContainer}>
                 {buttons.map((row, rowIndex) => (
                     <View key={rowIndex} style={styles.row}>
                         {row.map((btn) => (
-                            <TouchableOpacity key={btn || `empty-${rowIndex}`} style={styles.button} onPress={() => handlePress(btn)}>
-                                <Text style={styles.buttonText}>{btn}</Text>
-                            </TouchableOpacity>
-                        ))}
+                            <CalcButton key={btn} label={btn} onPress={handlePress} size={45} textSize={15}/>
+                            ))}
                     </View>
                 ))}
             </View>
 
             <StatusBar style="auto" />
-        </View>
+        </SafeAreaView>
     );
 };
 
@@ -149,14 +142,14 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#fff',
         paddingHorizontal: 20,
-        paddingTop: 30,
-        justifyContent: 'flex-start',
+        paddingTop: 10,
+        justifyContent: 'space-between',
     },
     topBar: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        marginBottom: 15,
+        marginBottom: 10,
     },
     restart: {
         fontSize: 22,
@@ -189,27 +182,27 @@ const styles = StyleSheet.create({
         elevation: 5,
     },
     buttonsContainer: {
-        flex: 1,
         justifyContent: 'center',
         alignItems: 'flex-end',
+        paddingBottom: 20, // mniejszy oddech
     },
     row: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        marginVertical: 6,
+        marginVertical: 4, // ciaśniej
     },
     button: {
         backgroundColor: '#000',
-        width: 55,
-        height: 55,
-        borderRadius: 32,
+        width: 45,
+        height: 45,
+        borderRadius: 25,
         alignItems: 'center',
         justifyContent: 'center',
-        marginHorizontal: 6,
+        marginHorizontal: 4, // ciaśniej
     },
     buttonText: {
         color: '#fff',
-        fontSize: 18,
+        fontSize: 16,
         fontWeight: 'bold',
     },
 });
