@@ -135,7 +135,7 @@ const CalculatorLandscape = () => {
             <StatusBar style="auto" />
         </SafeAreaView>
     );
-};
+}
 
 const styles = StyleSheet.create({
     container: {
