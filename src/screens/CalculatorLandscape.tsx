@@ -184,12 +184,12 @@ const styles = StyleSheet.create({
     buttonsContainer: {
         justifyContent: 'center',
         alignItems: 'flex-end',
-        paddingBottom: 20, // mniejszy oddech
+        paddingBottom: 20,
     },
     row: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        marginVertical: 4, // ciaśniej
+        marginVertical: 4,
     },
     button: {
         backgroundColor: '#000',
@@ -198,7 +198,7 @@ const styles = StyleSheet.create({
         borderRadius: 25,
         alignItems: 'center',
         justifyContent: 'center',
-        marginHorizontal: 4, // ciaśniej
+        marginHorizontal: 4,
     },
     buttonText: {
         color: '#fff',
